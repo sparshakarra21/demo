@@ -1,0 +1,31 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Verify directory contents
+        run: ls -al
+
+      - name: Make scripts executable
+        run: chmod +x process-file.sh deploy.sh
+
+      - name: Run process-file script
+        run: ./process-file.sh
+
+      - name: Deploy to GitHub Pages
+        run: ./deploy.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
